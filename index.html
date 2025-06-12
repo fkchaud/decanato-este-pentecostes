@@ -26,19 +26,27 @@
       const resultadoDiv = document.getElementById("resultado");
       resultadoDiv.innerHTML = `<img src="loading-gif.gif" style="max-width:300px;">`;
 
-      const res = await fetch(url);
-      const texto = await res.text();
-
       const enlaceDescarga = document.getElementById("descargar");
+      enlaceDescarga.style.display = "none";
 
-      // Si es una URL de imagen, muestra la imagen
-      if (texto.startsWith("http")) {
-        resultadoDiv.innerHTML = `<img src="${texto}" style="max-width:300px;">`;
-        enlaceDescarga.href = texto;
-        enlaceDescarga.style.display = "inline-block";
-        buscarBtn.disabled = false;
-    } else {
-        resultadoDiv.textContent = texto;
+
+      try {
+        const res = await fetch(url);
+        const texto = await res.text();
+
+        // Si es una URL de imagen, muestra la imagen
+        if (texto.startsWith("http")) {
+          resultadoDiv.innerHTML = `<img src="${texto}" style="max-width:300px;">`;
+          enlaceDescarga.href = texto;
+          enlaceDescarga.style.display = "inline-block";
+          buscarBtn.disabled = false;
+        } else {
+          resultadoDiv.textContent = texto;
+          enlaceDescarga.style.display = "none";
+          buscarBtn.disabled = false;
+        }
+      } catch {
+        resultadoDiv.textContent = "Hubo un error. Verificá tu DNI.";
         enlaceDescarga.style.display = "none";
         buscarBtn.disabled = false;
       }
