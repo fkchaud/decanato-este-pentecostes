@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Imagen</title>
+</head>
+<body>
+  <h2>Poné tu DNI sin puntos ni espacios ni comas:</h2>
+  <input type="number" id="clave" placeholder="40000000">
+  <button onclick="consultar()">Buscar</button>
+  <div id="resultado"></div>
+  <a id="descargar" style="display: none;" download="qr-pentecostes-2025.jpg">
+    <button>Descargar imagen</button>
+  </a>
+
+
+  <script>
+    async function consultar() {
+      const clave = document.getElementById("clave").value;
+      const url = `https://script.google.com/macros/s/AKfycbymPlEvT-Wd_GzDP2H2W-Fitsyys2SQ2tkMwA8XUQ4Pwd2JDgvFH2ilwILF20l1Lgif0Q/exec?id=${encodeURIComponent(clave)}`;
+
+      const res = await fetch(url);
+      const texto = await res.text();
+
+      const resultadoDiv = document.getElementById("resultado");
+      const enlaceDescarga = document.getElementById("descargar");
+
+      // Si es una URL de imagen, muestra la imagen
+      if (texto.startsWith("http")) {
+        resultadoDiv.innerHTML = `<img src="${texto}" style="max-width:300px;">`;
+        enlaceDescarga.href = texto;
+        enlaceDescarga.style.display = "inline-block";
+      } else {
+        resultadoDiv.textContent = texto;
+        enlaceDescarga.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
