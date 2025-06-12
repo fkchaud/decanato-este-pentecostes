@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Consulta QR Pentecostés</title>
+  <link rel="icon" type="image/x-icon" href="deca.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -19,6 +20,8 @@
       background-color: var(--background);
       color: var(--text);
       align-items: start;
+      max-width: 500px;
+      justify-self: center;
     }
 
     .container {
@@ -126,8 +129,7 @@
       const resultadoDiv = document.getElementById("resultado");
       resultadoDiv.innerHTML = `<img src="loading-gif.gif" alt="Cargando...">`;
 
-      const enlaceDescarga = document.getElementById("descargar");
-      enlaceDescarga.style.display = "none";
+      deshabilitarDescarga();
 
       const respuestaDiv = document.getElementById("respuesta");
       respuestaDiv.style.display = "block";
@@ -138,19 +140,23 @@
 
         if (texto.startsWith("http")) {
           resultadoDiv.innerHTML = `<img id="imagenResultado" src="${texto}" alt="QR encontrado">`;
+          const enlaceDescarga = document.getElementById("descargar");
           enlaceDescarga.href = texto;
-          enlaceDescarga.style.display = "block";
+          habilitarDescarga();
         } else {
           resultadoDiv.textContent = texto;
-          enlaceDescarga.style.display = "none";
+          deshabilitarDescarga();
         }
       } catch {
         resultadoDiv.textContent = "Hubo un error. Verificá tu DNI.";
-        enlaceDescarga.style.display = "none";
+        deshabilitarDescarga();
       } finally {
         buscarBtn.disabled = false;
       }
     }
+
+    const deshabilitarDescarga = () => document.getElementById("descargar").style.display = "none";
+    const habilitarDescarga = () => document.getElementById("descargar").style.display = "block";
   </script>
 </body>
 </html>
